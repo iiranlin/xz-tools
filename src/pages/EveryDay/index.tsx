@@ -88,30 +88,30 @@ const Company: React.FC = () => {
         return dayjs(record.date).format('YYYY年交易台账--MM月DD日');
       },
     },
-    // {
-    //   width: 80,
-    //   align: 'center',
-    //   title: '操作',
-    //   dataIndex: 'option',
-    //   valueType: 'option',
-    //   render: (_, record) => [
-    //     <Button
-    //       type="link"
-    //       key="edit"
-    //       onClick={async () => {
-    //         const date = dayjs(record.date);
-    //         const formatted = date.format('YYYY-MM-DD');
-    //         const res = await EnterTheDetailService.export({
-    //           startDate: date.format('YYYY-01-01'),
-    //           endDate: formatted,
-    //         });
-    //         downloadBlobFile(res.data, `${date.format('YYYY年交易台账-MM月DD日')}.xlsx`);
-    //       }}
-    //     >
-    //       下载
-    //     </Button>,
-    //   ],
-    // },
+    {
+      width: 80,
+      align: 'center',
+      title: '操作',
+      dataIndex: 'option',
+      valueType: 'option',
+      render: (_, record) => [
+        <Button
+          type="link"
+          key="edit"
+          onClick={async () => {
+            const date = dayjs(record.date);
+            const formatted = date.format('YYYY-MM-DD');
+            const res = await EnterTheDetailService.export({
+              startDate: date.format('YYYY-01-01'),
+              endDate: formatted,
+            });
+            downloadBlobFile(res.data, `${date.format('YYYY年交易台账-MM月DD日')}.xlsx`);
+          }}
+        >
+          下载
+        </Button>,
+      ],
+    },
   ];
 
   return (

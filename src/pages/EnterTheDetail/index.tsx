@@ -500,9 +500,9 @@ const EnterTheDetail: React.FC = () => {
           >
             <PlusOutlined /> 新增交易
           </Button>,
-          // <Button key="download" onClick={onDownload}>
-          //   <DownloadOutlined /> 下载
-          // </Button>,
+          <Button key="download" onClick={onDownload}>
+            <DownloadOutlined /> 下载
+          </Button>,
           <Button
             danger
             key="batchDelete"
