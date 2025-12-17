@@ -23,26 +23,47 @@ export default [
       },
     ],
   },
+
   {
-    path: '/welcome',
-    name: '台账看板',
+    path: '/incomeExpenseTransactionManagement',
+    name: '收支交易管理',
     locale: false,
     icon: 'BarChartOutlined',
-    component: './Kanban',
-  },
-  {
-    path: '/days',
-    name: '每日报表',
-    locale: false,
-    icon: 'SnippetsOutlined',
-    component: './EveryDay',
-  },
-  {
-    path: '/enterTheDetail',
-    name: '交易明细',
-    locale: false,
-    icon: 'DiffOutlined',
-    component: './EnterTheDetail',
+    routes: [
+      {
+        path: '/incomeExpenseTransactionManagement',
+        redirect: '/incomeExpenseTransactionManagement/welcome',
+      },
+      {
+        path: '/incomeExpenseTransactionManagement/welcome',
+        name: '台账看板',
+        locale: false,
+        // icon: 'BarChartOutlined',
+        component: './Kanban',
+      },
+      {
+        path: '/incomeExpenseTransactionManagement/days',
+        name: '每日报表',
+        locale: false,
+        // icon: 'SnippetsOutlined',
+        component: './EveryDay',
+      },
+      {
+        path: '/incomeExpenseTransactionManagement/month',
+        name: '月度统计',
+        locale: false,
+        // icon: 'SnippetsOutlined',
+        component: './Month',
+      },
+      {
+        path: '/incomeExpenseTransactionManagement/enterTheDetail',
+        name: '交易明细',
+        locale: false,
+        // icon: 'DiffOutlined',
+        component: './EnterTheDetail',
+      },
+
+    ],
   },
   {
     path: '/loan',
@@ -112,9 +133,10 @@ export default [
       },
     ],
   },
+
   {
     path: '/',
-    redirect: '/welcome',
+    redirect: '/incomeExpenseTransactionManagement/welcome',
   },
   {
     path: '*',

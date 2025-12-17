@@ -504,6 +504,41 @@ export class EnterTheDetailService {
     }
   }
 
+  // 查询月度统计
+  static async getMonth<T>(params: PageParams): Promise<{
+    data: T[];
+    total: number;
+    success: boolean;
+  }> {
+    try {
+      const { current: pageNum, pageSize, ...rest } = params;
+      const res = await request<{
+        data: T[];
+        code: number;
+      }>('/api/enterTheDetails/statisticsByMonth', {
+        method: 'GET',
+        params: {
+          pageNum,
+          pageSize,
+          ...rest,
+        },
+      });
+
+      return {
+        data: res.data || [],
+        total: res.data.length || 0,
+        success: res.code === 0,
+      };
+    } catch (error) {
+      console.error('获取月度统计出错:', error);
+      return {
+        data: [],
+        total: 0,
+        success: false,
+      };
+    }
+  }
+
   // 添加银行
   static async add(data: Omit<EnterFormType, 'id'>): Promise<{
     success: boolean;
@@ -590,6 +625,30 @@ export class EnterTheDetailService {
       };
     } catch (error) {
       console.error('导出出错:', error);
+      return {
+        success: false,
+        data: new Blob(),
+      };
+    }
+  }
+
+  // 月度统计导出
+  static async exportMonth(params: PageParams): Promise<{
+    success: boolean;
+    data: Blob;
+  }> {
+    try {
+      const res = await request(`/api/enterTheDetails/statisticsByMonthExport`, {
+        method: 'GET',
+        params,
+        responseType: 'blob',
+      });
+      return {
+        success: true,
+        data: res,
+      };
+    } catch (error) {
+      console.error('月度统计导出出错:', error);
       return {
         success: false,
         data: new Blob(),
@@ -933,7 +992,7 @@ export class LoanService {
   }
 
   // getLoanData
-  static async getLoanData<T>(data:any):Promise<any>{
+  static async getLoanData<T>(data: any): Promise<any> {
     try {
       const res = await request(`/api/loanInterest/interestCalculation`, {
         method: 'POST',
@@ -1087,14 +1146,14 @@ export class LoanInterestService {
     }
   }
 
-  static async getCompanyDetailList<T>(id:string): Promise<{
+  static async getCompanyDetailList<T>(id: string): Promise<{
     success: boolean;
     data: any;
   }> {
     try {
       const res = await request(`/api/loanInterest/getById`, {
         method: 'GET',
-        params:{
+        params: {
           id
         },
       });
