@@ -1,7 +1,7 @@
 import ResizableTitle from '@/components/ResizableTitle';
 import type { ProColumns } from '@ant-design/pro-components';
 import type { ResizeCallbackData } from 'react-resizable';
-import { useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 /**
  * 为 ProTable 列添加拖拽调整宽度功能的 Hook
@@ -9,40 +9,48 @@ import { useState } from 'react';
  * @returns 包含列配置和 components 配置的对象
  */
 export function useResizableColumns<T = any>(initialColumns: ProColumns<T>[]) {
-    const [columns, setColumns] = useState<ProColumns<T>[]>(
-        initialColumns.map((col) => ({
-            ...col,
-            // 如果列没有指定 width,为其设置一个默认宽度以支持拖拽
-            width: col.width || 150,
-        })),
+    // 使用 ref 保存初始列配置，避免因为外部引用变化导致重新初始化
+    const initialColumnsRef = useRef(initialColumns);
+
+    // 仅存储宽度信息，不存储整个列配置
+    const [columnWidths, setColumnWidths] = useState<Record<number, number>>(() => {
+        const widths: Record<number, number> = {};
+        initialColumns.forEach((col, index) => {
+            widths[index] = (col.width as number) || 150;
+        });
+        return widths;
+    });
+
+    const handleResize = useMemo(
+        () => (index: number) => (_: React.SyntheticEvent, { size }: ResizeCallbackData) => {
+            setColumnWidths((prevWidths) => ({
+                ...prevWidths,
+                [index]: size.width,
+            }));
+        },
+        [],
     );
 
-    const handleResize =
-        (index: number) =>
-            (_: React.SyntheticEvent, { size }: ResizeCallbackData) => {
-                setColumns((prevColumns) => {
-                    const newColumns = [...prevColumns];
-                    newColumns[index] = {
-                        ...newColumns[index],
-                        width: size.width,
-                    };
-                    return newColumns;
-                });
-            };
+    // 使用 useMemo 合并初始列配置和宽度信息
+    const mergedColumns = useMemo(() => {
+        return initialColumns.map((col, index) => ({
+            ...col,
+            width: columnWidths[index],
+            onHeaderCell: (column: ProColumns<T>) => ({
+                width: columnWidths[index],
+                onResize: handleResize(index),
+            }),
+        })) as ProColumns<T>[];
+    }, [initialColumns, columnWidths, handleResize]);
 
-    const mergedColumns = columns.map((col, index) => ({
-        ...col,
-        onHeaderCell: (column: ProColumns<T>) => ({
-            width: column.width,
-            onResize: handleResize(index),
+    const components = useMemo(
+        () => ({
+            header: {
+                cell: ResizableTitle,
+            },
         }),
-    })) as ProColumns<T>[];
-
-    const components = {
-        header: {
-            cell: ResizableTitle,
-        },
-    };
+        [],
+    );
 
     return {
         columns: mergedColumns,
