@@ -49,6 +49,7 @@ const Company: React.FC = () => {
                   tradeDateMonth: i,
                   businessTypeId: record.businessTypeId,
                   type,
+                  businessTypeName: record.businessTypeName,
                 });
               }}
             >
@@ -95,7 +96,34 @@ const Company: React.FC = () => {
         dataIndex: 'total',
         ellipsis: true,
         hideInSearch: true,
-        width: 120,
+        fixed: 'right',
+        width: 150,
+        render: (_, record) => {
+          const amount = record.total;
+          // @ts-ignore
+          if (!amount || amount === 0) {
+            return '0';
+          }
+          return (
+            <Button
+              type="link"
+              onClick={() => {
+                detailModalRef.current?.showModal({
+                  tradeDateYear: year,
+                  tradeDateMonth: null,
+                  businessTypeId: record.businessTypeId,
+                  type,
+                  businessTypeName: record.businessTypeName,
+                });
+              }}
+            >
+              {new Intl.NumberFormat('zh-CN', {
+                style: 'currency',
+                currency: 'CNY',
+              }).format(+amount)}
+            </Button>
+          );
+        },
       },
     ];
   };

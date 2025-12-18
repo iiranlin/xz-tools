@@ -9,8 +9,9 @@ import React, { useImperativeHandle, useState } from 'react';
 export interface DetailModalRef {
   showModal: (params: {
     tradeDateYear: string;
-    tradeDateMonth: number;
+    tradeDateMonth: number | null;
     businessTypeId: string;
+    businessTypeName: string;
     type: number; // 1 | 2 to distinguish income/expense if needed for title or logic
   }) => void;
 }
@@ -21,20 +22,23 @@ const DetailModal: React.FC<{
   const [visible, setVisible] = useState(false);
   const [params, setParams] = useState<{
     tradeDateYear: string;
-    tradeDateMonth: number;
+    tradeDateMonth: number | null;
     businessTypeId: string;
+    businessTypeName: string;
     type: number;
   }>({
     tradeDateYear: '',
-    tradeDateMonth: 0,
+    tradeDateMonth: null,
     businessTypeId: '',
     type: 1,
+    businessTypeName: '',
   });
 
   const showModal = (newParams: {
     tradeDateYear: string;
-    tradeDateMonth: number;
+    tradeDateMonth: number | null;
     businessTypeId: string;
+    businessTypeName: string;
     type: number;
   }) => {
     setParams(newParams);
@@ -119,9 +123,9 @@ const DetailModal: React.FC<{
     if (res.success) {
       downloadBlobFile(
         res.data,
-        `${params.tradeDateYear}年${params.tradeDateMonth}月${
-          params.type === 1 ? '收入' : '支出'
-        }明细.xlsx`,
+        `${params.tradeDateYear}年${params.tradeDateMonth ? `${params.tradeDateMonth}月` : ''}${
+          params.businessTypeName
+        }${params.type === 1 ? '收入' : '支出'}明细.xlsx`,
       );
     }
   };
