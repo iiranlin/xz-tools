@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+import { useResizableColumns } from '@/hooks/useResizableColumns';
 import { EnterTheDetailService } from '@/services';
 import { downloadBlobFile } from '@/utils/download';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
@@ -114,6 +115,9 @@ const Company: React.FC = () => {
     },
   ];
 
+  // 应用列宽拖拽配置
+  const { columns: resizableColumns, components } = useResizableColumns(columns);
+
   return (
     <PageContainer>
       <ProTable<CompanyType, API.PageParams>
@@ -128,7 +132,8 @@ const Company: React.FC = () => {
         toolBarRender={false}
         request={EnterTheDetailService.getAllTransactionDates<{ date: string }>}
         // @ts-ignore
-        columns={columns}
+        columns={resizableColumns}
+        components={components}
         columnEmptyText=""
         bordered
       />

@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+import { useResizableColumns } from '@/hooks/useResizableColumns';
 import { EnterTheDetailService } from '@/services';
 import { downloadBlobFile } from '@/utils/download';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
@@ -130,6 +131,16 @@ const Company: React.FC = () => {
     ];
   };
 
+  // 收入表格的列宽拖拽配置
+  const { columns: incomeColumns, components: incomeComponents } = useResizableColumns<MonthType>(
+    getColumns(1),
+  );
+
+  // 支出表格的列宽拖拽配置
+  const { columns: expenseColumns, components: expenseComponents } = useResizableColumns<MonthType>(
+    getColumns(2),
+  );
+
   return (
     <PageContainer>
       <QueryFilter<{
@@ -186,7 +197,8 @@ const Company: React.FC = () => {
         params={{ year } as any}
         request={(params) => EnterTheDetailService.getMonth<MonthType>({ ...params, type: 1 })}
         // @ts-ignore
-        columns={getColumns(1)}
+        columns={incomeColumns}
+        components={incomeComponents}
         columnEmptyText=""
         bordered
       />
@@ -204,7 +216,8 @@ const Company: React.FC = () => {
         params={{ year } as any}
         request={(params) => EnterTheDetailService.getMonth<MonthType>({ ...params, type: 2 })}
         // @ts-ignore
-        columns={getColumns(2)}
+        columns={expenseColumns}
+        components={expenseComponents}
         columnEmptyText=""
         bordered
       />

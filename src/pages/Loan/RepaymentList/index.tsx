@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useResizableColumns } from '@/hooks/useResizableColumns';
 import { ProTable } from '@ant-design/pro-components';
 import { Select } from 'antd';
 import { LoanInterestService } from '@/services'; // 自定义 API 路径
@@ -30,7 +31,7 @@ const LoanRepayment: React.FC = () => {
       align: 'center',
       width: 80,
       render: (_, __, index, action) => {
-       // 获取当前页码和每页条数
+        // 获取当前页码和每页条数
         const { current = 1, pageSize = 10 } = action?.pageInfo || {};
 
         // 计算序号：(当前页码 - 1) * 每页条数 + 当前行索引 + 1
@@ -55,7 +56,7 @@ const LoanRepayment: React.FC = () => {
             formRef.current?.setFieldValue('bankId', undefined);
             formRef.current?.setFieldsValue({
               corporationId: value,
-            })
+            });
           }}
         />
       ),
@@ -84,7 +85,7 @@ const LoanRepayment: React.FC = () => {
       align: 'center',
       initialValue: [dayjs().startOf('month'), dayjs().endOf('month')],
     },
-    
+
     {
       title: '应还款日期',
       dataIndex: 'repayDate',
@@ -132,12 +133,15 @@ const LoanRepayment: React.FC = () => {
     },
   ];
 
+  const { columns: resizableColumns, components } = useResizableColumns(columns);
+
   return (
     <ProTable
       actionRef={actionRef}
       formRef={formRef}
       rowKey="id"
-      columns={columns}
+      columns={resizableColumns}
+      components={components}
       bordered
       scroll={{ x: 1300 }}
       columnEmptyText=""

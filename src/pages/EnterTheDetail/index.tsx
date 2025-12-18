@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+import { useResizableColumns } from '@/hooks/useResizableColumns';
 import {
   BankService,
   BusinessService,
@@ -459,6 +460,10 @@ const EnterTheDetail: React.FC = () => {
       },
     });
   };
+
+  // 应用列宽拖拽配置
+  const { columns: resizableColumns, components } = useResizableColumns(columns);
+
   return (
     <PageContainer>
       <ProTable<EnterFormType, API.PageParams>
@@ -566,7 +571,8 @@ const EnterTheDetail: React.FC = () => {
           </Table.Summary>
         )}
         // onSubmit={getSummary}
-        columns={columns}
+        columns={resizableColumns}
+        components={components}
         columnEmptyText=""
         bordered
       />

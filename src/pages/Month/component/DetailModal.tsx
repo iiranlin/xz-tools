@@ -1,3 +1,4 @@
+import { useResizableColumns } from '@/hooks/useResizableColumns';
 import { EnterTheDetailService } from '@/services';
 import { downloadBlobFile } from '@/utils/download';
 import type { ProColumns } from '@ant-design/pro-components';
@@ -123,6 +124,9 @@ const DetailModal: React.FC<{
     }
   };
 
+  // 应用列宽拖拽配置
+  const { columns: resizableColumns, components } = useResizableColumns(columns);
+
   return (
     <Modal
       title={`${params.type === 1 ? '收入' : '支出'}明细`}
@@ -142,7 +146,8 @@ const DetailModal: React.FC<{
         rowKey="id"
         search={false}
         toolBarRender={false}
-        columns={columns}
+        columns={resizableColumns}
+        components={components}
         params={params}
         request={async (p) => {
           // Pass formatted params to backend

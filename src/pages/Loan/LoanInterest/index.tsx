@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { useResizableColumns } from '@/hooks/useResizableColumns';
 import { ProTable } from '@ant-design/pro-components';
 import { Button, Select, Modal, message, Popconfirm, Space } from 'antd';
 import dayjs from 'dayjs';
@@ -93,7 +94,7 @@ const LoanManagement: React.FC = () => {
             formRef.current?.setFieldValue('bankId', undefined);
             formRef.current?.setFieldsValue({
               corporationId: value,
-            })
+            });
           }}
           options={companyList.map((item) => ({
             label: item.name,
@@ -337,6 +338,8 @@ const LoanManagement: React.FC = () => {
     },
   ];
 
+  const { columns: resizableColumns, components } = useResizableColumns(tableColumns);
+
   return (
     <div className="page-container">
       <ProTable
@@ -357,7 +360,8 @@ const LoanManagement: React.FC = () => {
           </Button>,
         ]}
         request={LoanService.getList}
-        columns={tableColumns}
+        columns={resizableColumns}
+        components={components}
         columnEmptyText=""
         bordered
       />

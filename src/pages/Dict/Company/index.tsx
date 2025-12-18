@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+import { useResizableColumns } from '@/hooks/useResizableColumns';
 import { CompanyService } from '@/services';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
@@ -86,6 +87,8 @@ const Company: React.FC = () => {
     },
   ];
 
+  const { columns: resizableColumns, components } = useResizableColumns(columns);
+
   return (
     <PageContainer>
       <ProTable<CompanyType, API.PageParams>
@@ -109,7 +112,8 @@ const Company: React.FC = () => {
           </Button>,
         ]}
         request={CompanyService.getCompanyList<CompanyType>}
-        columns={columns}
+        columns={resizableColumns}
+        components={components}
         columnEmptyText=""
         bordered
       />

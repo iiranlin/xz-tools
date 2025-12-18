@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+import { useResizableColumns } from '@/hooks/useResizableColumns';
 import { BankService, CompanyService } from '@/services';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
@@ -155,6 +156,8 @@ const Bank: React.FC = () => {
     },
   ];
 
+  const { columns: resizableColumns, components } = useResizableColumns(columns);
+
   return (
     <PageContainer>
       <ProTable<BankType, API.PageParams>
@@ -185,7 +188,8 @@ const Bank: React.FC = () => {
           </Button>,
         ]}
         request={BankService.getBankList<BankType>}
-        columns={columns}
+        columns={resizableColumns}
+        components={components}
         columnEmptyText=""
         bordered
       />
