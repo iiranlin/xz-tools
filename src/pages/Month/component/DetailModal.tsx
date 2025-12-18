@@ -5,42 +5,35 @@ import { ProTable } from '@ant-design/pro-components';
 import { Button, Modal } from 'antd';
 import dayjs from 'dayjs';
 import React, { useImperativeHandle, useState } from 'react';
+import { StyleType } from '../type';
 
 export interface DetailModalRef {
-  showModal: (params: {
-    tradeDateYear: string;
-    tradeDateMonth: number | null;
-    businessTypeId: string;
-    businessTypeName: string;
-    type: number; // 1 | 2 to distinguish income/expense if needed for title or logic
-  }) => void;
+  showModal: (params: DownloadParams) => void;
+}
+
+interface DownloadParams {
+  tradeDateYear: string;
+  tradeDateMonth: number | null;
+  businessTypeId: string;
+  businessTypeName: string;
+  type: number;
+  style: StyleType;
 }
 
 const DetailModal: React.FC<{
   ref: any;
 }> = React.forwardRef((props, ref) => {
   const [visible, setVisible] = useState(false);
-  const [params, setParams] = useState<{
-    tradeDateYear: string;
-    tradeDateMonth: number | null;
-    businessTypeId: string;
-    businessTypeName: string;
-    type: number;
-  }>({
+  const [params, setParams] = useState<DownloadParams>({
     tradeDateYear: '',
     tradeDateMonth: null,
     businessTypeId: '',
     type: 1,
     businessTypeName: '',
+    style: StyleType.MergeStyle,
   });
 
-  const showModal = (newParams: {
-    tradeDateYear: string;
-    tradeDateMonth: number | null;
-    businessTypeId: string;
-    businessTypeName: string;
-    type: number;
-  }) => {
+  const showModal = (newParams: DownloadParams) => {
     setParams(newParams);
     setVisible(true);
   };

@@ -35,3 +35,9 @@ export interface MonthSearchParams {
   type: MonthSearchType;
   businessTypeId?: string;
 }
+
+//  1 是收支分离样式 2 是金额样式
+export enum StyleType {
+  InComStyle = '1',
+  MergeStyle = '2',
+}

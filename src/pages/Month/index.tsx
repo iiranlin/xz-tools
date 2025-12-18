@@ -12,7 +12,7 @@ import { Button } from 'antd';
 import dayjs from 'dayjs';
 import { useRef, useState } from 'react';
 import DetailModal, { DetailModalRef } from './component/DetailModal';
-import { MonthSearchParams, MonthType } from './type';
+import { MonthSearchParams, MonthType, StyleType } from './type';
 
 const Company: React.FC = () => {
   const incomeActionRef = useRef<ActionType>();
@@ -50,6 +50,7 @@ const Company: React.FC = () => {
                   businessTypeId: record.businessTypeId,
                   type,
                   businessTypeName: record.businessTypeName,
+                  style: StyleType.MergeStyle,
                 });
               }}
             >
@@ -114,6 +115,7 @@ const Company: React.FC = () => {
                   businessTypeId: record.businessTypeId,
                   type,
                   businessTypeName: record.businessTypeName,
+                  style: StyleType.MergeStyle,
                 });
               }}
             >
