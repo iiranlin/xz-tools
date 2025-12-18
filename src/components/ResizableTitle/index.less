@@ -1,0 +1,30 @@
+.react-resizable {
+  position: relative;
+  background-clip: padding-box;
+}
+
+.react-resizable-handle {
+  position: absolute;
+  right: -5px;
+  bottom: 0;
+  z-index: 1;
+  width: 10px;
+  height: 100%;
+  cursor: col-resize;
+}
+
+.react-resizable-handle::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  width: 2px;
+  height: 20px;
+  background-color: rgba(0, 0, 0, 0.1);
+  transform: translateY(-50%);
+  transition: background-color 0.2s;
+}
+
+.react-resizable-handle:hover::before {
+  background-color: #1890ff;
+}
