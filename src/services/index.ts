@@ -464,6 +464,180 @@ export class BusinessService {
   }
 }
 
+// 归属项目
+export class BlongProjectService {
+  // 查询银行列表（用于ProTable）
+  static async getBlongProjectList<T>(params: PageParams): Promise<{
+    data: T[];
+    total: number;
+    success: boolean;
+  }> {
+    try {
+      const { current: pageNum, pageSize, ...rest } = params;
+      const res = await request<{
+        data: {
+          list: T[];
+          total: number;
+        };
+        code: number;
+      }>('/api/belong-poject/listPage', {
+        method: 'GET',
+        params: {
+          pageNum,
+          pageSize,
+          ...rest,
+        },
+      });
+
+      return {
+        data: res.data.list || [],
+        total: res.data.total || 0,
+        success: res.code === 0,
+      };
+    } catch (error) {
+      console.error('获取归属项目列表出错:', error);
+      return {
+        data: [],
+        total: 0,
+        success: false,
+      };
+    }
+  }
+
+  // 添加项目
+  static async addBlongproject(data: Omit<BankType, 'id'>): Promise<{
+    success: boolean;
+    message: string;
+  }> {
+    try {
+      const res = await request('/api/belong-poject/create', {
+        method: 'POST',
+        data,
+      });
+      return {
+        success: res.code === 0,
+        message: res.message || '添加成功',
+      };
+    } catch (error) {
+      console.error('添加公司出错:', error);
+      return {
+        success: false,
+        message: '添加失败',
+      };
+    }
+  }
+
+  // 更新银行
+  static async updateBlongproject(data: Partial<BankType>): Promise<{
+    success: boolean;
+    message: string;
+  }> {
+    try {
+      const res = await request(`/api/belong-poject/modify`, {
+        method: 'POST',
+        data,
+      });
+      return {
+        success: res.code === 0,
+        message: res.message || '更新成功',
+      };
+    } catch (error) {
+      console.error('更新归属项目出错:', error);
+      return {
+        success: false,
+        message: '更新失败',
+      };
+    }
+  }
+}
+
+// 费用类型
+export class ExpenseTypeService {
+  // 查询银行列表（用于ProTable）
+  static async getExpenseTypeList<T>(params: PageParams): Promise<{
+    data: T[];
+    total: number;
+    success: boolean;
+  }> {
+    try {
+      const { current: pageNum, pageSize, ...rest } = params;
+      const res = await request<{
+        data: {
+          list: T[];
+          total: number;
+        };
+        code: number;
+      }>('/api/bost-type-dict/listPage', {
+        method: 'GET',
+        params: {
+          pageNum,
+          pageSize,
+          ...rest,
+        },
+      });
+
+      return {
+        data: res.data.list || [],
+        total: res.data.total || 0,
+        success: res.code === 0,
+      };
+    } catch (error) {
+      console.error('获取费用类型列表出错:', error);
+      return {
+        data: [],
+        total: 0,
+        success: false,
+      };
+    }
+  }
+
+  // 添加项目
+  static async addExpenseType(data: Omit<BankType, 'id'>): Promise<{
+    success: boolean;
+    message: string;
+  }> {
+    try {
+      const res = await request('/api/bost-type-dict/create', {
+        method: 'POST',
+        data,
+      });
+      return {
+        success: res.code === 0,
+        message: res.message || '添加成功',
+      };
+    } catch (error) {
+      console.error('添加公司出错:', error);
+      return {
+        success: false,
+        message: '添加失败',
+      };
+    }
+  }
+
+  // 更新银行
+  static async updateExpenseType(data: Partial<BankType>): Promise<{
+    success: boolean;
+    message: string;
+  }> {
+    try {
+      const res = await request(`/api/bost-type-dict/modify`, {
+        method: 'POST',
+        data,
+      });
+      return {
+        success: res.code === 0,
+        message: res.message || '更新成功',
+      };
+    } catch (error) {
+      console.error('更新归属项目出错:', error);
+      return {
+        success: false,
+        message: '更新失败',
+      };
+    }
+  }
+}
+
 // 录入明细
 export class EnterTheDetailService {
   // 查询银行列表（用于ProTable）

@@ -6,6 +6,8 @@ import {
   CompanyService,
   EnterTheDetailService,
   OtherCompanyService,
+  BlongProjectService,
+  ExpenseTypeService
 } from '@/services';
 import { downloadBlobFile } from '@/utils/download';
 import { DownloadOutlined, PlusOutlined } from '@ant-design/icons';
@@ -18,6 +20,8 @@ import { BankType } from '../Dict/Bank/type';
 import { BusinessType } from '../Dict/BusinessType/type';
 import { CompanyType } from '../Dict/Company/type';
 import { OtherCompanyType } from '../Dict/OtherCompany/type';
+import { BlongProjectType } from '../Dict/BlongProject/type';
+import { ExpenseType } from '../Dict/ExpenseType/type';
 import EditModal, { EditModalRef } from './component/EditModal';
 import { EnterFormType } from './type';
 const EnterTheDetail: React.FC = () => {
@@ -31,6 +35,11 @@ const EnterTheDetail: React.FC = () => {
   const [bankList, setBankList] = React.useState<BankType[]>([]);
   const [businessList, setBusinessList] = React.useState<BusinessType[]>([]);
 
+  const [blongProjectList, setBlongProjectList] = React.useState<BlongProjectType[]>([]);
+  const [expenseList, setExpenseList] = React.useState<ExpenseType[]>([]);
+
+
+
   const params = {
     pageSize: 99999,
     current: 1,
@@ -42,6 +51,9 @@ const EnterTheDetail: React.FC = () => {
       OtherCompanyService.getCompanyList<OtherCompanyType>(params),
       // BankService.getBankList<BankType>(params),
       BusinessService.getBusinessList<BusinessType>(params),
+
+      BlongProjectService.getBlongProjectList<BlongProjectType>(params),
+      ExpenseTypeService.getExpenseTypeList<ExpenseType>(params),
     ]);
 
     setCompanyList(
@@ -72,12 +84,28 @@ const EnterTheDetail: React.FC = () => {
         ...x,
       })),
     );
+    setBlongProjectList(
+      res[3]?.data?.map((x) => ({
+        label: x.belongPojectName,
+        value: x.id,
+        ...x,
+      })),
+    );
+    setExpenseList(
+      res[4]?.data?.map((x) => ({
+        label: x.costTypeName,
+        value: x.id,
+        ...x,
+      })),
+    );
   };
   const optionsList = {
     companyList,
     otherCompanyList,
     bankList,
     businessList,
+    blongProjectList,
+    expenseList
   }; // 选项列
 
   useEffect(() => {
@@ -238,6 +266,50 @@ const EnterTheDetail: React.FC = () => {
         );
       },
     },
+
+    {
+      title: '归属项目',
+      align: 'center',
+      dataIndex: 'belongProjectId',
+      valueType: 'select',
+      hideInTable: true,
+      renderFormItem: () => {
+        return (
+          <Select
+            allowClear
+            showSearch
+            optionFilterProp="label"
+            placeholder="请选择"
+            options={blongProjectList.map((item) => ({
+              label: item.belongPojectName,
+              value: item.id,
+            }))}
+          />
+        );
+      },
+    },
+
+    {
+      title: '费用类型',
+      align: 'center',
+      dataIndex: 'costTypeId',
+      valueType: 'select',
+      hideInTable: true,
+      renderFormItem: () => {
+        return (
+          <Select
+            allowClear
+            showSearch
+            optionFilterProp="label"
+            placeholder="请选择"
+            options={expenseList.map((item) => ({
+              label: item.costTypeName,
+              value: item.id,
+            }))}
+          />
+        );
+      },
+    },
   ];
 
   const columns: ProColumns<EnterFormType>[] = [
@@ -314,6 +386,22 @@ const EnterTheDetail: React.FC = () => {
       title: '业务类型',
       align: 'center',
       dataIndex: 'businessTypeName',
+      ellipsis: true,
+      hideInSearch: true,
+      width: 180,
+    },
+    {
+      title: '归属项目',
+      align: 'center',
+      dataIndex: 'belongPojectName',
+      ellipsis: true,
+      hideInSearch: true,
+      width: 180,
+    },
+    {
+      title: '费用类型',
+      align: 'center',
+      dataIndex: 'costTypeName',
       ellipsis: true,
       hideInSearch: true,
       width: 180,

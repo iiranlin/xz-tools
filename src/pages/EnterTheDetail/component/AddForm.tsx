@@ -134,6 +134,43 @@ const AddForm: React.FC<AddFormProps> = ({ form, optionsList }) => {
           options={optionsList.businessList}
         />
       </Form.Item>
+
+      <Form.Item
+        label="项目归属类型"
+        name="belongProjectId"
+        rules={[
+          {
+            required: true,
+            message: '请选择项目归属类型',
+          },
+        ]}
+      >
+        <Select
+          showSearch
+          optionFilterProp="label"
+          placeholder="请选择"
+          options={optionsList.blongProjectList}
+        />
+      </Form.Item>
+
+      <Form.Item
+        label="费用类型"
+        name="costTypeId"
+        rules={[
+          {
+            required: true,
+            message: '请选择费用类型',
+          },
+        ]}
+      >
+        <Select
+          showSearch
+          optionFilterProp="label"
+          placeholder="请选择"
+          options={optionsList.expenseList}
+        />
+      </Form.Item>
+
       <Form.Item
         label="交易类型"
         name="transactionType"

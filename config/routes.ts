@@ -131,6 +131,18 @@ export default [
         locale: false,
         component: './Dict/BusinessType',
       },
+      {
+        path: '/dict/blongProject',
+        name: '归属项目',
+        locale: false,
+        component: './Dict/BlongProject',
+      },
+      {
+        path: '/dict/expenseType',
+        name: '费用类型',
+        locale: false,
+        component: './Dict/ExpenseType',
+      },
     ],
   },
 

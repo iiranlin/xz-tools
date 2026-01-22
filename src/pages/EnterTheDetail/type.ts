@@ -3,6 +3,8 @@ import { BankType } from '../Dict/Bank/type';
 import { BusinessType } from '../Dict/BusinessType/type';
 import { CompanyType } from '../Dict/Company/type';
 import { OtherCompanyType } from '../Dict/OtherCompany/type';
+import { BlongProjectType } from '../Dict/BlongProject/type';
+import { ExpenseType } from '../Dict/ExpenseType/type';
 
 export interface EnterTheDetailType {
   id: string | null;
@@ -20,6 +22,8 @@ export interface EnterFormType {
   corporationId?: string;
   businessTypeId?: string;
   otherCorporationId?: string;
+  belongProjectId?:string;
+  costTypeId?:string;
   incomeAmount?: string | null | number;
   expenseAmount?: string | null | number;
   transactionType?: TransactionType;
@@ -32,6 +36,8 @@ export interface OptionsListType {
   otherCompanyList: OtherCompanyType[];
   bankList: BankType[];
   businessList: BusinessType[];
+  blongProjectList: BlongProjectType[];
+  expenseList:ExpenseType[];
 }
 
 export type SegmentedType = 'single' | 'multiple';
