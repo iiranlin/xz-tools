@@ -1,6 +1,6 @@
 export interface BlongProjectType {
   id: string | null;
-  belongPojectName: string;
+  belongProjectName: string;
   remark?: string;
   createTime?: string;
 }

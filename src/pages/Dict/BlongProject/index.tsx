@@ -31,7 +31,7 @@ const Blongproject: React.FC = () => {
     {
       title: '归属项目名称',
       align: 'center',
-      dataIndex: 'belongPojectName',
+      dataIndex: 'belongProjectName',
       ellipsis: true,
       hideInSearch: false,
     },
@@ -93,7 +93,7 @@ const Blongproject: React.FC = () => {
             type="primary"
             key="primary"
             onClick={() => {
-              modalRef.current?.showModal({ belongPojectName: '', remark: '', id: null });
+              modalRef.current?.showModal({ belongProjectName: '', remark: '', id: null });
             }}
           >
             <PlusOutlined /> 新增

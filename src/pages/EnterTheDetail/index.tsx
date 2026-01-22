@@ -86,7 +86,7 @@ const EnterTheDetail: React.FC = () => {
     );
     setBlongProjectList(
       res[3]?.data?.map((x) => ({
-        label: x.belongPojectName,
+        label: x.belongProjectName,
         value: x.id,
         ...x,
       })),
@@ -281,7 +281,7 @@ const EnterTheDetail: React.FC = () => {
             optionFilterProp="label"
             placeholder="请选择"
             options={blongProjectList.map((item) => ({
-              label: item.belongPojectName,
+              label: item.belongProjectName,
               value: item.id,
             }))}
           />
@@ -393,7 +393,7 @@ const EnterTheDetail: React.FC = () => {
     {
       title: '归属项目',
       align: 'center',
-      dataIndex: 'belongPojectName',
+      dataIndex: 'belongProjectName',
       ellipsis: true,
       hideInSearch: true,
       width: 180,

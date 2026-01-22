@@ -58,7 +58,7 @@ const EditModal: React.FC<Props> = React.forwardRef((props, ref) => {
       <Form form={form} labelCol={{ span: 6 }}>
         <Form.Item
           label="归属项目名称"
-          name="belongPojectName"
+          name="belongProjectName"
           rules={[
             {
               required: true,
