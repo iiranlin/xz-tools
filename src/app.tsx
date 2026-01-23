@@ -3,11 +3,9 @@ import { currentUser as queryCurrentUser } from '@/services/ant-design-pro/api';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
 import type { RunTimeLayoutConfig } from '@umijs/max';
-import { history } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
 const isDev = process.env.NODE_ENV === 'development';
-const loginPath = '/user/login';
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
@@ -20,31 +18,33 @@ export async function getInitialState(): Promise<{
 }> {
   const fetchUserInfo = async () => {
     try {
+      // 尝试从 sessionStorage 获取用户信息
+      const storedUser = sessionStorage.getItem('initState');
+      if (storedUser) {
+        return JSON.parse(storedUser);
+      }
       const msg = await queryCurrentUser({
         skipErrorHandler: true,
       });
       return msg.data;
     } catch (error) {
-      history.push(loginPath);
+      // 登录失败时返回匿名用户，不再跳转登录页
+      console.log('获取用户信息失败，使用匿名访问');
     }
     return undefined;
   };
-  // 如果不是登录页面，执行获取用户信息，没有则跳转登录页
-  const { location } = history;
-  if (location.pathname !== loginPath) {
-    if (!sessionStorage.getItem('initState')) {
-      history.push(loginPath);
-    } else {
-      const currentUser = JSON.parse(sessionStorage.getItem('initState') as string);
-      return {
-        currentUser,
-        loading: false,
-        fetchUserInfo,
-        settings: defaultSettings as Partial<LayoutSettings>,
-      };
-    }
-  }
+
+  // 尝试获取已存储的用户信息
+  const storedUser = sessionStorage.getItem('initState');
+  const currentUser = storedUser ? JSON.parse(storedUser) : {
+    name: '访客',
+    avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
+    access: 'guest',
+  };
+
   return {
+    currentUser,
+    loading: false,
     fetchUserInfo,
     settings: defaultSettings as Partial<LayoutSettings>,
   };
@@ -68,11 +68,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     },
     footerRender: () => <Footer />,
     onPageChange: () => {
-      const { location } = history;
-      // 如果没有登录，重定向到 login
-      if (!sessionStorage.getItem('initState') && location.pathname !== loginPath) {
-        history.push(loginPath);
-      }
+      // 已移除登录检查，允许匿名访问所有页面
     },
     bgLayoutImgList: [
       {
