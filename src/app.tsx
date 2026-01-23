@@ -53,6 +53,8 @@ export async function getInitialState(): Promise<{
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
   return {
+    // 纯净模式：隐藏左侧菜单、顶部导航、面包屑，只展示页面内容
+    pure: true,
     actionsRender: () => [],
     avatarProps: {
       src: initialState?.currentUser?.avatar,
