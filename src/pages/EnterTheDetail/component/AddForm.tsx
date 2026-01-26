@@ -158,7 +158,7 @@ const AddForm: React.FC<AddFormProps> = ({ form, optionsList }) => {
         name="costTypeId"
         rules={[
           {
-            required: true,
+            // required: true,
             message: '请选择费用类型',
           },
         ]}
