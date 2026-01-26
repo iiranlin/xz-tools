@@ -615,7 +615,7 @@ const EnterTheDetail: React.FC = () => {
           <Table.Summary fixed>
             <Table.Summary.Row>
               {/* 前面合并单元格，用于展示“全部合计” */}
-              <Table.Summary.Cell index={0} colSpan={columns.length - 8}>
+              <Table.Summary.Cell index={0} colSpan={columns.length - 10}>
                 <div style={{ textAlign: 'left', fontWeight: 600 }}>全部合计：</div>
               </Table.Summary.Cell>
 
