@@ -713,6 +713,63 @@ export class EnterTheDetailService {
     }
   }
 
+  // 查询Excel列数据
+  static async exportMonthlyReport<T>(params: PageParams): Promise<{
+    data: T[];
+    success: boolean;
+  }> {
+    try {
+      const { current: pageNum, pageSize, ...rest } = params;
+      const res = await request<{
+        data: T[];
+        code: number;
+      }>('/api/enterTheDetails/exportMonthlyReport', {
+        method: 'GET',
+        params: {
+          pageNum,
+          pageSize,
+          ...rest,
+        },
+      });
+
+      return {
+        data: res.data || [],
+        success: res.code === 0,
+      };
+    } catch (error) {
+      console.error('获取Excel列数据出错:', error);
+      return {
+        data: [],
+        total: 0,
+        success: false,
+      };
+    }
+  }
+
+  // 导出月度报告（Blob文件）
+  static async exportMonthlyReportBlob(params: PageParams): Promise<{
+    success: boolean;
+    data: Blob;
+  }> {
+    try {
+      const res = await request(`/api/enterTheDetails/exportMonthlyReport`, {
+        method: 'GET',
+        params,
+        responseType: 'blob',
+      });
+      return {
+        success: true,
+        data: res,
+      };
+    } catch (error) {
+      console.error('导出月度报告出错:', error);
+      return {
+        success: false,
+        data: new Blob(),
+      };
+    }
+  }
+
   // 添加银行
   static async add(data: Omit<EnterFormType, 'id'>): Promise<{
     success: boolean;

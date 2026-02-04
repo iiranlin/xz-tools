@@ -217,7 +217,6 @@ const KanbanPage: React.FC = () => {
         <ExcelModal
           visible={excelVisible}
           onCancel={onCancel}
-          data={accountData}
           searchParams={searchParams}
         />
       </Card>

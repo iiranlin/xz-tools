@@ -1,7 +1,7 @@
 import { EnterTheDetailService } from '@/services';
 import { downloadBlobFile } from '@/utils/download';
 import { Button, Modal, Table } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AccountData } from '..';
 const formatCurrency = (value: number) =>
   new Intl.NumberFormat('zh-CN', { style: 'currency', currency: 'CNY' }).format(value);
@@ -9,11 +9,29 @@ const formatCurrency = (value: number) =>
 interface ExcelModalProps {
   visible: boolean;
   onCancel: () => void;
-  data: AccountData[];
   searchParams: any;
 }
 
-const ExcelModal: React.FC<ExcelModalProps> = ({ visible, onCancel, data, searchParams }) => {
+const ExcelModal: React.FC<ExcelModalProps> = ({ visible, onCancel, searchParams }) => {
+  const [loading, setLoading] = React.useState(false);
+  const [data, setData] = React.useState<AccountData[]>([]);
+
+  // 弹窗打开时获取数据
+  useEffect(() => {
+    if (visible) {
+      fetchData();
+    }
+  }, [visible, searchParams]);
+
+  // 使用新接口获取数据
+  const fetchData = async () => {
+    setLoading(true);
+    const res = await EnterTheDetailService.exportMonthlyReport<AccountData>(searchParams).finally(
+      () => setLoading(false),
+    );
+    setData(res.data || []);
+  };
+
   // 按公司分组
   const groupByCorporation = (list: AccountData[]) => {
     const map: Record<string, AccountData[]> = {};
@@ -118,7 +136,6 @@ const ExcelModal: React.FC<ExcelModalProps> = ({ visible, onCancel, data, search
     },
   ];
 
-  const [loading, setLoading] = React.useState(false);
   // 导出功能（调用后端接口下载文件）
   const handleDownload = async () => {
     setLoading(true);
