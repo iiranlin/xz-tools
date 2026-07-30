@@ -50,6 +50,19 @@ const Company: React.FC = () => {
       },
       hideInTable: true,
     },
+    {
+      title: '类型',
+      dataIndex: 'queryType',
+      valueType: 'select',
+      initialValue: 2,
+      fieldProps: {
+        options: [
+          { label: '仅当月', value: 1 },
+          { label: '截止到当月', value: 2 },
+        ],
+      },
+      hideInTable: true,
+    },
   ];
 
   const columns: ProColumns<{ date: string }>[] = [
@@ -125,6 +138,7 @@ const Company: React.FC = () => {
         rowKey="id"
         search={{
           labelWidth: 100,
+          defaultCollapsed: false,
         }}
         pagination={{
           defaultPageSize: 10,
